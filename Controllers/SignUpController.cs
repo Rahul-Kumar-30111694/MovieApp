@@ -21,15 +21,15 @@ namespace MainProject.SignUp.Controllers
         [HttpPost]
         public IActionResult SignUp(SignUpModel request)
         {
-            if (ModelState.IsValid)
-            {
+            // if (ModelState.IsValid)
+            // {
                 _signUpService.SignUpMethod(request);
                 return Content("Successful Registration.");
-            }
-            else
-            {
-                return Content("Registration Failed.");
-            }
+        //     }
+        //     else
+        //     {
+        //         return Content("Registration Failed.");
+        //     }
         }
     }
 }

@@ -8,10 +8,17 @@
                         <p class="text-muted"> Please enter your Details!</p>
                         <input type="text" name="Username" placeholder="Username">
                         <input type="text" name="EmailAddress" placeholder="Email Address">
+                        @* <div class="roleselect">
+                            <label for="role">Role:</label>
+                            <select id="role" name="role">
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div> *@
                         <input type="password" id="password" name="Password" placeholder="Password">
                         <input type="password" onkeyup="check()" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm Password"> <br>
                         @* <p id="message"></p> *@
-                        <button class="button" type="submit" name="">Sign Up</button><br><br>
+                        <button class="button" type="submit" style="color: black;">Sign Up</button><br><br>
                         <label for="">Already Have Account!</label><br>
                         <a class="signupbutton" asp-controller="Login" asp-action="Index" style="color :#3498db;">Login</a><br><br>
                         <a class="forgotpassword" asp-controller="ForgotPassword" asp-action="Index">Forgot password ?</a>
