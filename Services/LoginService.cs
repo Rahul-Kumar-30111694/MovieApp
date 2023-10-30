@@ -1,16 +1,15 @@
-using MainProject.Login.Model;
-using MainProject.Login.Interface;
-using MainProject.DataBase.Interface;
-using MainProject.SignUp.Model;
+using MovieApp.Models;
 using MongoDB.Driver;
+using MovieApp.Database;
+using MovieApp.Services;
 
 namespace MainProject.Login.Service
 {
-    public class LoginServices : ILoginServices
+    public class LoginService : ILoginService
     {
         private readonly IDatabaseCollections _databaseCollections;
 
-        public LoginServices(IDatabaseCollections databaseCollections)
+        public LoginService(IDatabaseCollections databaseCollections)
         {
             _databaseCollections = databaseCollections;
         }

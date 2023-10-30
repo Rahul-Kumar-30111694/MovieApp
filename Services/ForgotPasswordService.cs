@@ -1,15 +1,14 @@
 using MovieApp.Database;
-using MainProject.ForgotPassword.Interface;
-using MovieApp.Model;
+using MovieApp.Models;
 using MongoDB.Driver;
 
-namespace MainProject.ForgotPassword.Services
+namespace MovieApp.Services
 {
-    public class ForgotPasswordServices : IForgotPasswordServices
+    public class ForgotPasswordService : IForgotPasswordService
     {
         private readonly IDatabaseCollections _databaseCollections;
 
-        public ForgotPasswordServices(IDatabaseCollections databaseCollections)
+        public ForgotPasswordService(IDatabaseCollections databaseCollections)
         {
             _databaseCollections = databaseCollections;
         }

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MainProject.Login.Interface;
-using MainProject.Login.Model;
-using MongoDB.Bson.IO;
-using Newtonsoft.Json;
+using MovieApp.Models;
+using MovieApp.Services;
 
 namespace MainProject.Login.Controllers
 {
@@ -14,11 +12,11 @@ namespace MainProject.Login.Controllers
             return View();
         }
 
-        private readonly ILoginServices _loginServices;
+        private readonly ILoginService _loginService;
 
-        public LoginController(ILoginServices loginServices)
+        public LoginController(ILoginService loginService)
         {
-            _loginServices = loginServices;
+            _loginService = loginService;
         }
 
         [HttpPost]
@@ -26,7 +24,7 @@ namespace MainProject.Login.Controllers
         {
             //if (ModelState.IsValid)
             //{
-            bool result = _loginServices.LoginMethod(request);
+            bool result = _loginService.LoginMethod(request);
             if (result)
             {
                 return RedirectToAction("Index", "ThirdPartyApiData", new {data= request.EmailAddress});

@@ -1,6 +1,6 @@
-using MainProject.Login.Model;
+using MovieApp.Models;
 
-namespace MainProject.Login.Interface
+namespace MovieApp.Services
 {
     public interface ILoginService
     {

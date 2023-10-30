@@ -1,5 +1,7 @@
 using MovieApp.Services;
 using MovieApp.Database;
+using MainProject.Login.Service;
+using MainProject.SignUp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddScoped<IDatabaseCollections, DatabaseCollections>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IHomePageService, HomePageService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ISignUpService, SignUpService>();
+builder.Services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
 
 var app = builder.Build();
 

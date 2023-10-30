@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MovieApp.Model
+namespace MovieApp.Models
 {
     public class ForgotPasswordModel
     {

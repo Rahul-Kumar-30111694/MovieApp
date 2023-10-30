@@ -1,15 +1,15 @@
-using MainProject.SignUp.Interface;
-using MainProject.SignUp.Model;
-using MainProject.DataBase.Interface;
+using MovieApp.Models;
 using MongoDB.Driver;
+using MovieApp.Database;
+using MovieApp.Services;
 
 namespace MainProject.SignUp.Services
 {
-    public class SignUpServices : ISignUpServices
+    public class SignUpService : ISignUpService
     {
         private readonly IDatabaseCollections _databaseCollections;
 
-        public SignUpServices(IDatabaseCollections databaseCollections)
+        public SignUpService(IDatabaseCollections databaseCollections)
         {
             _databaseCollections = databaseCollections;
         }
