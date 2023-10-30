@@ -1,0 +1,34 @@
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <form class="box" method="post" asp-controller="SignUp" asp-action="SignUp">
+                        <h1>Sign Up</h1>
+                        <p class="text-muted"> Please enter your Details!</p>
+                        <input type="text" name="Username" placeholder="Username">
+                        <input type="text" name="EmailAddress" placeholder="Email Address">
+                        <input type="password" id="password" name="Password" placeholder="Password">
+                        <input type="password" onkeyup="check()" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm Password"> <br>
+                        @* <p id="message"></p> *@
+                        <button class="button" type="submit" name="">Sign Up</button><br><br>
+                        <label for="">Already Have Account!</label><br>
+                        <a class="signupbutton" asp-controller="Login" asp-action="Index" style="color :#3498db;">Login</a><br><br>
+                        <a class="forgotpassword" asp-controller="ForgotPassword" asp-action="Index">Forgot password ?</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <script>
+    var confirmPassword = document.getElementById("confirmPassword");
+    var password = document.getElementById("password");
+    var message = document.getElementById("message");
+
+    function check() {
+        if (confirmPassword.value !== password.value) {
+            message.innerHTML = "Confirm password is same.";
+        }
+    }
+</script> *@

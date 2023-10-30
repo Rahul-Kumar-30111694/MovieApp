@@ -1,0 +1,68 @@
+@model MovieApp.Models.ViewPage
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Movie Details and Reviews</title>
+</head>
+
+<body>
+    <div class="review">
+        <header>
+            <h1>@Model.Moviedata.Title</h1>
+            <img class="movie-poster" src="@Model.Moviedata.Poster" alt="Movie Poster" />
+            <p>Year: @Model.Moviedata.Year</p>
+            <p>Genre: @Model.Moviedata.Genre</p>
+            <p>Director: @Model.Moviedata.Director</p>
+            <p>Rating: @ViewBag.ImdbRating</p>
+            <p>
+                @foreach (var rating in ViewBag.Ratings)
+                {
+                    <p>@rating.Source : @rating.Value</p>
+                }
+            </p>
+        </header>
+        <section class="movie-details">
+            <h2>Movie Details:</h2>
+            <p class="plot">
+                <br> @Model.Moviedata.Plot
+            </p>
+        </section>
+        <section class="reviews">
+            <form method="post" asp-controller="Review" asp-action="MyComment">
+                <div class="form-group">
+                    <input type="hidden" name="IMDBID" value="@Model.Moviedata.imdbID">
+                    <label for="commentText">Your Comment:</label>
+                    <textarea id="commentText" name="remarks" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Comment</button>
+            </form>
+            <br><br>
+            <h2>Customer Reviews</h2>
+
+            <!-- Display existing comments -->
+            <div class="comments">
+                @foreach (var comment in Model.MovieReviews){
+                {
+                    <ul>
+                    <li>
+                        <div class="comment">
+                            <p>@comment.Username</p>
+                            <p>@comment.DatePosted</p>
+                            <p>@comment.Comments</p>
+                        </div>
+                    </li>
+                    </ul>
+                }}
+            </div>
+
+            <!-- Form for users to submit comments -->
+        </section>
+    </div>
+</body>
+
+</html>

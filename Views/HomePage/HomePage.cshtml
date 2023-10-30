@@ -1,0 +1,129 @@
+@* @model MovieApp.Models.PagedMoviesViewModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>MongoDB Data</title>
+</head>
+
+<body>
+<div class="searchbtn">
+<form method="post" asp-controller="HomePage" asp-action="HomePage">
+<input class="rounded" type="text" name="request" placeholder="Search movies" value="@ViewBag.SearchTerm"><br>
+<button class="btn_btn-primary" type="submit">Search</button>
+</form>
+</div>
+<div class="filter">
+<form method="post" asp-controller="HomePage" asp-action="GFilter" id="genreForm">
+<label for="genre">Genre:</label>
+<select id="genre" name="genre" style="margin-right: 17px;">
+<option value="no"> </option>
+<option value="action">Action</option>
+<option value="comedy">Comedy</option>
+<option value="drama">Drama</option>
+<!-- Add more genre options as needed -->
+</select>
+</form>
+<form method="post" asp-controller="Homepage" asp-action="YearFilter" id="yearForm">
+<label for="year">Year:</label>
+<select id="year" name="year">
+<option value="no"> </option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+<!-- Add more year options as needed -->
+</select>
+</form>
+</div>
+<br>
+<form method="post" asp-controller="Review" asp-action="Review">
+<div class="movie-grid">
+@foreach (var item in Model.Movies)
+{
+<div class="movie-item">
+<a href="@Url.Action("Review", "Review", new { movieName = item.Title })"><img class="movie-poster"
+src="@item.Poster" alt="Movie Poster" /></a>
+<p>@item.Title</p>
+</div>
+}
+</div>
+</form>
+<div class="pagination">
+@if (Model.TotalPages > 1)
+{
+for (int i = 1; i <= Model.TotalPages; i++)
+{
+if (i == Model.CurrentPage)
+{
+<span>@i</span>
+}
+else
+{
+<a href="@Url.Action("HomePage", new { page = i })">@i</a>
+}
+}
+}
+</div>
+</body>
+
+</html>
+
+<script>
+document.getElementById('genre').addEventListener('change', function ()
+{document.getElementById('genreForm').submit();});
+document.getElementById('year').addEventListener('change', function () {document.getElementById('yearForm').submit();});
+</script> *@
+
+@model List<MoviesInDB>
+
+
+<div class="HomePage">
+    <div class="searchbtn">
+        <form method="post" asp-controller="HomePage" asp-action="HomePage">
+            <input class="rounded" type="text" name="request" placeholder="Search movies"><br>
+            <button class="btn_btn-primary" type="submit">Search</button>
+        </form>
+        <br>
+    </div>
+    <div class="moviefilters">
+        <form method="post" id="genreForm" asp-controller="HomePage" asp-action="HomePage">
+            <label for="genre">Genre:</label>
+            <select id="genre" name="genre" style="margin-right: 25px;">
+                <option value="no"> </option>
+                <option value="action">Action</option>
+                <option value="comedy">Comedy</option>
+                <option value="drama">Drama</option>
+                <!-- Add more genre options as needed -->
+            </select>
+        </form>
+        <form method="post" asp-controller="Homepage" asp-action="HomePage" id="yearForm">
+            <label for="year">Year:</label>
+            <select id="year" name="Year">
+                <option value="no"> </option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <!-- Add more year options as needed -->
+            </select>
+        </form>
+    </div>
+    <div class="movie-grid">
+        @foreach (var item in Model)
+        {
+            <div class="movie-card">
+                <a href="@Url.Action("Review", "Review", new { movieName = item.Title })"><img class="movie-poster"
+                        src="@item.Poster" alt="Movie Poster" /></a>
+                <div class="movie-details">
+                    <h3 class="movie-title">@item.Title</h3>
+                    <!-- Add other movie details here -->
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.getElementById('genre').addEventListener('change', function () { document.getElementById('genreForm').submit(); });
+    document.getElementById('year').addEventListener('change', function () {document.getElementById('yearForm').submit();});
+</script>
