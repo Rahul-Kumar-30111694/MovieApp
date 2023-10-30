@@ -1,6 +1,6 @@
-using MainProject.SignUp.Interface;
-using MainProject.SignUp.Model;
 using Microsoft.AspNetCore.Mvc;
+using MovieApp.Models;
+using MovieApp.Services;
 
 namespace MainProject.SignUp.Controllers
 {
@@ -11,11 +11,11 @@ namespace MainProject.SignUp.Controllers
             return View();
         }
 
-        private readonly ISignUpServices _signUpServices;
+        private readonly ISignUpService _signUpService;
 
-        public SignUpController(ISignUpServices signUpServices)
+        public SignUpController(ISignUpService signUpService)
         {
-            _signUpServices = signUpServices;
+            _signUpService = signUpService;
         }
 
         [HttpPost]
@@ -23,7 +23,7 @@ namespace MainProject.SignUp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _signUpServices.SignUpMethod(request);
+                _signUpService.SignUpMethod(request);
                 return Content("Successful Registration.");
             }
             else

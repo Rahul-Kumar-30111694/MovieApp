@@ -1,7 +1,7 @@
 using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 using MongoDB.Driver;
 using MovieApp.Models;
-using MovieProject.Database;
+using MovieApp.Database;
 using Newtonsoft.Json;
 using RestSharp;
 

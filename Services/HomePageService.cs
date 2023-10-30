@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MovieApp.Models;
-using MovieProject.Database;
+using MovieApp.Database;
 
 namespace MovieApp.Services
 {

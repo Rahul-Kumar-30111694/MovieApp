@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MovieApp.Model
+namespace MovieApp.Models
 {
     public class LoginModel
     {

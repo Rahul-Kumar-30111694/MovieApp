@@ -1,8 +1,8 @@
-using MainProject.ForgotPassword.Model;
+using MovieApp.Models;
 
-namespace MainProject.ForgotPassword.Interface
+namespace MovieApp.Services
 {
-    public interface IForgotPasswordServices
+    public interface IForgotPasswordService
     {
         public bool ForgotPasswordMethod(ForgotPasswordModel request);
     }

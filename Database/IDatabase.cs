@@ -7,5 +7,6 @@ namespace MovieApp.Database
     {
         public IMongoCollection<MoviesInDB> MovieDetails();
         public IMongoCollection<Review> AllComments();
+        public IMongoCollection<SignUpModel> UserDetails();
     }
 }

@@ -1,6 +1,6 @@
-using MainProject.ForgotPassword.Interface;
-using MainProject.ForgotPassword.Model;
 using Microsoft.AspNetCore.Mvc;
+using MovieApp.Models;
+using MovieApp.Services;
 
 namespace MainProject.ForgotPassword.Controllers
 {
@@ -11,11 +11,11 @@ namespace MainProject.ForgotPassword.Controllers
             return View();
         } 
 
-        private readonly IForgotPasswordServices _forgotPasswordServices;
+        private readonly IForgotPasswordService _forgotPasswordService;
 
-        public ForgotPasswordController(IForgotPasswordServices forgotPasswordServices)
+        public ForgotPasswordController(IForgotPasswordService forgotPasswordService)
         {
-            _forgotPasswordServices = forgotPasswordServices;
+            _forgotPasswordService = forgotPasswordService;
         }
 
         [HttpPost]
@@ -23,7 +23,7 @@ namespace MainProject.ForgotPassword.Controllers
         {
             if(ModelState.IsValid)
             {
-                _forgotPasswordServices.ForgotPasswordMethod(request);
+                _forgotPasswordService.ForgotPasswordMethod(request);
                 return Content("Success.");
             }
             return Content("Unsuccess.");

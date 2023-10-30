@@ -1,8 +1,8 @@
-using MainProject.SignUp.Model;
+using MovieApp.Models;
 
-namespace MainProject.SignUp.Interface
+namespace MovieApp.Services
 {
-    public interface ISignUpServices
+    public interface ISignUpService
     {
         public bool SignUpMethod(SignUpModel request);
     }
