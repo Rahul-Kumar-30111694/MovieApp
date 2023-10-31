@@ -8,11 +8,9 @@ namespace MovieApp.Controllers
 {
     public class HomePageController : Controller
     {
-        private readonly IDatabaseCollections _databaseCollections;
         private readonly IHomePageService _homePageService;
-        public HomePageController(IDatabaseCollections databaseCollections, IHomePageService homePageService)
+        public HomePageController(IHomePageService homePageService)
         {
-            _databaseCollections = databaseCollections;
             _homePageService = homePageService;
         }
 
@@ -81,6 +79,7 @@ namespace MovieApp.Controllers
     
         public IActionResult HomePage(string request,string genre, string Year)
         {
+            //ViewBag.Role = TempData["Message"] as string;
             // if(Year == null)
             // {
             //     if(genre == null)
@@ -140,6 +139,11 @@ namespace MovieApp.Controllers
                 }
             }
             return Ok();
+        }
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("Token");
+            return RedirectToAction("Login", "Login");
         }
         // public IActionResult GFilter(string genre)
         // {

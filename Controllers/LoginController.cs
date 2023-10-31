@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MovieApp.Methods;
 using MovieApp.Models;
 using MovieApp.Services;
 
@@ -7,16 +8,22 @@ namespace MainProject.Login.Controllers
 
     public class LoginController : Controller
     {
+        private readonly ILoginService _loginService;
+        private readonly IJWTMethod _jWTMethod;
+
+        public LoginController(ILoginService loginService, IJWTMethod jWTMethod)
+        {
+            _loginService = loginService;
+            _jWTMethod = jWTMethod;
+        }
         public IActionResult Index()
         {
             return View();
         }
-
-        private readonly ILoginService _loginService;
-
-        public LoginController(ILoginService loginService)
+        public IActionResult Logout()
         {
-            _loginService = loginService;
+            Response.Cookies.Delete("Token");
+            return RedirectToAction("Login");
         }
         public IActionResult Login(LoginModel request)
         {
@@ -25,10 +32,11 @@ namespace MainProject.Login.Controllers
             bool result = _loginService.LoginMethod(request);
             if (result)
             {
-                return RedirectToAction("Index", "ThirdPartyApiData", new {data= request.EmailAddress});
+                //TempData["Message"] = _jWTMethod.ValidateToken(_jWTMethod.CreateToken(request.EmailAddress));
+                return RedirectToAction("HomePage", "Homepage", new { data = request.EmailAddress });
             }
             //     }
-            return Content("false");
+            return View("Index");
         }
     }
 }

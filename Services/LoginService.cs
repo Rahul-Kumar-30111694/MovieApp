@@ -9,14 +9,12 @@ namespace MainProject.Login.Service
     public class LoginService : ILoginService
     {
         private readonly IDatabaseCollections _databaseCollections;
-        private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IJWTMethod _jWTMethod;
 
-        public LoginService(IDatabaseCollections databaseCollections, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IJWTMethod jWTMethod)
+        public LoginService(IDatabaseCollections databaseCollections, IHttpContextAccessor httpContextAccessor, IJWTMethod jWTMethod)
         {
             _databaseCollections = databaseCollections;
-            _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
             _jWTMethod = jWTMethod;
         }

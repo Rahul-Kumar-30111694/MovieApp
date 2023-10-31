@@ -16,7 +16,7 @@ namespace MovieApp.Models
         public string? Username { get; set; }
 
         // [BsonElement("role")]
-        public bool IsAdmin { get; set; } 
+        public string Role { get; set; } = "User";
 
         // [Required]
         // [BsonElement("emailaddress")]

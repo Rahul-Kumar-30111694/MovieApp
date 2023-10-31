@@ -1,83 +1,74 @@
-@* @model MovieApp.Models.PagedMoviesViewModel
-
-<!DOCTYPE html>
-<html>
-
-<head>
-<title>MongoDB Data</title>
-</head>
-
-<body>
-<div class="searchbtn">
-<form method="post" asp-controller="HomePage" asp-action="HomePage">
-<input class="rounded" type="text" name="request" placeholder="Search movies" value="@ViewBag.SearchTerm"><br>
-<button class="btn_btn-primary" type="submit">Search</button>
-</form>
-</div>
-<div class="filter">
-<form method="post" asp-controller="HomePage" asp-action="GFilter" id="genreForm">
-<label for="genre">Genre:</label>
-<select id="genre" name="genre" style="margin-right: 17px;">
-<option value="no"> </option>
-<option value="action">Action</option>
-<option value="comedy">Comedy</option>
-<option value="drama">Drama</option>
-<!-- Add more genre options as needed -->
-</select>
-</form>
-<form method="post" asp-controller="Homepage" asp-action="YearFilter" id="yearForm">
-<label for="year">Year:</label>
-<select id="year" name="year">
-<option value="no"> </option>
-<option value="2023">2023</option>
-<option value="2022">2022</option>
-<option value="2021">2021</option>
-<!-- Add more year options as needed -->
-</select>
-</form>
-</div>
-<br>
-<form method="post" asp-controller="Review" asp-action="Review">
-<div class="movie-grid">
-@foreach (var item in Model.Movies)
-{
-<div class="movie-item">
-<a href="@Url.Action("Review", "Review", new { movieName = item.Title })"><img class="movie-poster"
-src="@item.Poster" alt="Movie Poster" /></a>
-<p>@item.Title</p>
-</div>
-}
-</div>
-</form>
-<div class="pagination">
-@if (Model.TotalPages > 1)
-{
-for (int i = 1; i <= Model.TotalPages; i++)
-{
-if (i == Model.CurrentPage)
-{
-<span>@i</span>
-}
-else
-{
-<a href="@Url.Action("HomePage", new { page = i })">@i</a>
-}
-}
-}
-</div>
-</body>
-
-</html>
-
-<script>
-document.getElementById('genre').addEventListener('change', function ()
-{document.getElementById('genreForm').submit();});
-document.getElementById('year').addEventListener('change', function () {document.getElementById('yearForm').submit();});
-</script> *@
-
 @model List<MoviesInDB>
 
+@inject IConfiguration _configuration
 
+@functions {
+    public string? ValidateToken(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return null;
+        }
+        var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+        var key = new
+        Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
+        var validationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                IssuerSigningKey = key
+            };
+        Microsoft.IdentityModel.Tokens.SecurityToken validatedToken;
+        var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+        string role = principal.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value!;
+        return role;
+    }
+}
+@{
+    var tokenCookies = Context.Request.Cookies["Token"];
+    @* var userRole = ValidateToken(tokenCookies); *@
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MovieApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MovieApp.styles.css" asp-append-version="true" />
+</head>
+<div>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="HomePage" asp-action="HomePage">MovieApp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @* @if (@ViewBag.Role == "Admin")
+                        { *@
+                        @if (ValidateToken(tokenCookies) == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin">AddMovies</a>
+                            </li>
+                        }
+                        @* } *@
+                        <li>
+                            <form asp-controller="Login" asp-action="Logout" method="post">
+                                <button class="Logoutbtn" style="margin-left: 900px;" type="submit">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</div>
 <div class="HomePage">
     <div class="searchbtn">
         <form method="post" asp-controller="HomePage" asp-action="HomePage">
@@ -125,5 +116,5 @@ document.getElementById('year').addEventListener('change', function () {document
 
 <script>
     document.getElementById('genre').addEventListener('change', function () { document.getElementById('genreForm').submit(); });
-    document.getElementById('year').addEventListener('change', function () {document.getElementById('yearForm').submit();});
+    document.getElementById('year').addEventListener('change', function () { document.getElementById('yearForm').submit(); });
 </script>

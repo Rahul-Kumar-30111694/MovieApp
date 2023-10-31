@@ -8,9 +8,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Movie Details and Reviews</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MovieApp.styles.css" asp-append-version="true" />
 </head>
 
 <body>
+    <div>
+        <header>
+            <nav
+                class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="HomePage" asp-action="HomePage">MovieApp</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li>
+                                <form asp-controller="Login" asp-action="Logout" method="post">
+                                    <button class="Logoutbtn" style="margin-left: 900px;" type="submit">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
     <div class="review">
         <header>
             <h1>@Model.Moviedata.Title</h1>
@@ -22,7 +49,7 @@
             <p>
                 @foreach (var rating in ViewBag.Ratings)
                 {
-                    <p>@rating.Source : @rating.Value</p>
+                <p>@rating.Source : @rating.Value</p>
                 }
             </p>
         </header>
@@ -46,18 +73,20 @@
 
             <!-- Display existing comments -->
             <div class="comments">
-                @foreach (var comment in Model.MovieReviews){
+                @foreach (var comment in Model.MovieReviews)
                 {
-                    <ul>
-                    <li>
-                        <div class="comment">
-                            <p>@comment.Username</p>
-                            <p>@comment.DatePosted</p>
-                            <p>@comment.Comments</p>
-                        </div>
-                    </li>
-                    </ul>
-                }}
+                    {
+                        <ul>
+                            <li>
+                                <div class="comment">
+                                    <p>@comment.Username</p>
+                                    <p>@comment.DatePosted</p>
+                                    <p>@comment.Comments</p>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                }
             </div>
 
             <!-- Form for users to submit comments -->
