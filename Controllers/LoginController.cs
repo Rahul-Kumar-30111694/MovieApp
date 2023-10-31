@@ -18,8 +18,6 @@ namespace MainProject.Login.Controllers
         {
             _loginService = loginService;
         }
-
-        [HttpPost]
         public IActionResult Login(LoginModel request)
         {
             //if (ModelState.IsValid)

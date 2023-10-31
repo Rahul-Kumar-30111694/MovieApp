@@ -1,4 +1,3 @@
-using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
 using MongoDB.Driver;
 using MovieApp.Models;
 using MovieApp.Database;
