@@ -29,12 +29,14 @@ namespace MovieApp.Controllers
         public IActionResult AdminControl(MoviesInDB request)
         {
             if(_adminService.AdminMethods(request))
-            {
-                return Ok("Success");
+            {   
+                ViewBag.Message = "Successfull";
+                return RedirectToAction("Admin");
             }
             else
             {
-                return Ok("Failed");
+                ViewBag.Message = "Something went Wrong.";
+                return RedirectToAction("Admin");
             }
         }
     }

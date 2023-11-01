@@ -512,3 +512,7 @@ label[for="role"] {
 .fa-star:not(.is-active):hover {
   color: #f1cc37;
 }
+
+.re{
+  display: flex;
+}

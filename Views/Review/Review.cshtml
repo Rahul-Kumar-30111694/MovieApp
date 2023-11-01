@@ -1,9 +1,9 @@
 @model MovieApp.Models.ViewPage
 
-@if (ViewBag.ErrorMessage != null)
+@if (ViewBag.Message != null)
 {
     <script>
-    alert("@ViewBag.ErrorMessage");
+    alert("@ViewBag.Message");
     </script>
 }
 
@@ -36,7 +36,7 @@
                         <ul class="navbar-nav flex-grow-1">
                             <li>
                                 <form asp-controller="Login" asp-action="Logout" method="post">
-                                    <button class="Logoutbtn" style="margin-left: 900px;" type="submit">Logout</button>
+                                    <button class="Logoutbtn" style="margin-left: 1000px;" type="submit">Logout</button>
                                 </form>
                             </li>
                         </ul>
@@ -94,8 +94,11 @@
                         <ul>
                             <li>
                                 <div class="comment">
-                                    <p>@comment.Username</p>
-                                    <p>@comment.DatePosted</p>
+                                    <div class="re">
+                                        <p>@comment.Username</p>
+                                        <p style="margin-left: 500px;">@comment.DatePosted</p>
+                                    </div>
+                                    <p>Stars: @comment.Stars</p>
                                     <p>@comment.Comments</p>
                                     @if (@ViewBag.Role == "Admin")
                                     {
@@ -131,7 +134,7 @@
                     cs = parseInt(this.getAttribute("data-star"));
                     document.getElementById('rating').value = cs;
                     document.getElementById(i).style.color = "red";
- 
+
                 })
                 i++;
             }

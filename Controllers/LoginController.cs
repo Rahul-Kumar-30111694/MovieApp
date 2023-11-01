@@ -32,13 +32,13 @@ namespace MainProject.Login.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Wrong Credentials. Please try again.";
+                    ViewBag.Message = "Wrong Credentials. Please try again.";
                     return View("Index");
                 }
             }
             else
             {
-                ViewBag.ErrorMessage = "Invalid User. Please try again.";
+                ViewBag.Message = "Invalid User. Please try again.";
                 return View("Index");
             }
         }

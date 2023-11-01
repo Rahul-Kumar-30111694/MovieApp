@@ -15,10 +15,10 @@
                         <a class="forgotpassword" asp-controller="ForgotPassword" asp-action="Index">Forgot password
                             ?</a>
                     </form>
-                    @if (ViewBag.ErrorMessage != null)
+                    @if (ViewBag.Message != null)
                     {
                         <script>
-                            alert("@ViewBag.ErrorMessage");
+                            alert("@ViewBag.Message");
                         </script>
                     }
                 </div>

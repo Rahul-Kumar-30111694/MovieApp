@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +50,10 @@
                 <input type="text" id="title" name="title" required>
             </div>
             <div class="form-group">
+                <label for="imdbID">imdbID:</label>
+                <input type="text" id="imdbID" name="imdbID" required>
+            </div>
+            <div class="form-group">
                 <label for="Year">Year:</label>
                 <input type="number" id="year" name="year" required>
             </div>
@@ -74,6 +75,12 @@
             </div>
             <button type="submit">Submit</button>
         </form>
+        @if (ViewBag.Message != null)
+        {
+            <script>
+                alert("@ViewBag.Message");
+            </script>
+        }
     </div>
 </body>
 
