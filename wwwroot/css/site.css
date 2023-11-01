@@ -57,6 +57,7 @@ button {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
 }
 
 .form-group {
@@ -315,7 +316,7 @@ body {
   text-align: center;
   transition: 0.25s;
   margin-left: 70px;
-  margin-top: 35px
+  margin-top: 70px
   
 }
 
@@ -479,5 +480,35 @@ label[for="role"] {
   background: #fff;
 }
 
+.review{
+  margin-top: 50px;
+}
 
+/* .review-actions {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 60px;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+  */
+/* .review-actions a {
+  text-decoration: none;
+  color: #5d9de1;
+} */
 
+.star-rating {
+  color: #bebebe;
+  font-size: 2em;
+}
+.fa-star {
+  cursor: pointer;
+}
+.is-active {
+  color: #f1cc37;
+}
+.fa-star:not(.is-active):hover {
+  color: #f1cc37;
+}

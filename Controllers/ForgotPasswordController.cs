@@ -24,9 +24,14 @@ namespace MainProject.ForgotPassword.Controllers
             if(ModelState.IsValid)
             {
                 _forgotPasswordService.ForgotPasswordMethod(request);
-                return Content("Success.");
+                ViewBag.ErrorMessage = "Successful";
+                return RedirectToAction("Index", "Login");
             }
-            return Content("Unsuccess.");
+            else
+            {
+                ViewBag.ErrorMessage = "Failed";
+                return View("Index");
+            }
         }
     }
 }

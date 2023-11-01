@@ -13,6 +13,12 @@
                         <label for="">Already Have Account!</label><br>
                         <a class="signupbutton" asp-controller="SignUp" asp-action="Index" style="color :#3498db;">Login</a><br><br>
                     </form>
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <script>
+                            alert("@ViewBag.ErrorMessage");
+                        </script>
+                    }
                 </div>
             </div>
         </div>

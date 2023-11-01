@@ -45,3 +45,10 @@
 /Users/30111694/Desktop/MovieApp/obj/Debug/net7.0/MovieApp.csproj.CopyComplete
 /Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Newtonsoft.Json.dll
 /Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/RestSharp.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/Users/30111694/Desktop/MovieApp/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll

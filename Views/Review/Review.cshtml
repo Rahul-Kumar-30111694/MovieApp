@@ -1,5 +1,12 @@
 @model MovieApp.Models.ViewPage
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <script>
+    alert("@ViewBag.ErrorMessage");
+    </script>
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,9 +15,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Movie Details and Reviews</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MovieApp.styles.css" asp-append-version="true" />
 </head>
 
 <body>
+    <div>
+        <header>
+            <nav
+                class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="HomePage" asp-action="HomePage">MovieApp</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li>
+                                <form asp-controller="Login" asp-action="Logout" method="post">
+                                    <button class="Logoutbtn" style="margin-left: 900px;" type="submit">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
     <div class="review">
         <header>
             <h1>@Model.Moviedata.Title</h1>
@@ -22,7 +56,7 @@
             <p>
                 @foreach (var rating in ViewBag.Ratings)
                 {
-                    <p>@rating.Source : @rating.Value</p>
+                <p>@rating.Source : @rating.Value</p>
                 }
             </p>
         </header>
@@ -35,6 +69,14 @@
         <section class="reviews">
             <form method="post" asp-controller="Review" asp-action="MyComment">
                 <div class="form-group">
+                    <input type="hidden" id="rating" name="Stars" value="-1">
+                    <div class=star-rating>
+                        <i class="fa-solid fa-star star-1" id="0" data-star="1"></i>
+                        <i class="fa-solid fa-star star-2" id="1" data-star="2"></i>
+                        <i class="fa-solid fa-star star-3" id="2" data-star="3"></i>
+                        <i class="fa-solid fa-star star-4" id="3" data-star="4"></i>
+                        <i class="fa-solid fa-star star-5" id="4" data-star="5"></i>
+                    </div>
                     <input type="hidden" name="IMDBID" value="@Model.Moviedata.imdbID">
                     <label for="commentText">Your Comment:</label>
                     <textarea id="commentText" name="remarks" rows="4" required></textarea>
@@ -46,18 +88,29 @@
 
             <!-- Display existing comments -->
             <div class="comments">
-                @foreach (var comment in Model.MovieReviews){
+                @foreach (var comment in Model.MovieReviews)
                 {
-                    <ul>
-                    <li>
-                        <div class="comment">
-                            <p>@comment.Username</p>
-                            <p>@comment.DatePosted</p>
-                            <p>@comment.Comments</p>
-                        </div>
-                    </li>
-                    </ul>
-                }}
+                    {
+                        <ul>
+                            <li>
+                                <div class="comment">
+                                    <p>@comment.Username</p>
+                                    <p>@comment.DatePosted</p>
+                                    <p>@comment.Comments</p>
+                                    @if (@ViewBag.Role == "Admin")
+                                    {
+                                        <form method="post" asp-controller="Review" asp-action="DeleteComment">
+                                            <input type="hidden" name="ReviewID" value="@comment.Id">
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                }
             </div>
 
             <!-- Form for users to submit comments -->
@@ -66,3 +119,30 @@
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        (function () {
+            let sr = document.querySelectorAll('.fa-star');
+            let i = 0;
+            let cs = 0;
+            while (i < sr.length) {
+                sr[i].addEventListener('click', function () {
+                    cs = parseInt(this.getAttribute("data-star"));
+                    document.getElementById('rating').value = cs;
+                    document.getElementById(i).style.color = "red";
+ 
+                })
+                i++;
+            }
+        })();
+        $(".fa-star").on('click', function () {
+            for (let i = 0; i <= 4; i++) {
+                document.getElementById(i).style.color = "";
+            }
+            for (let i = 0; i <= this.id; i++) {
+                document.getElementById(i).style.color = "#f1cc37";
+            }
+        });
+    });
+</script>

@@ -14,18 +14,23 @@ namespace MovieApp.Services
         }
         public List<MoviesInDB> GetByItem(string data)
         {
-            if(data == null)
+            if (data == null)
             {
                 return _databaseCollections.MovieDetails().Find(_ => true).ToList();
             }
             else
             {
-                return _databaseCollections.MovieDetails().Find(x => x.Title == data).ToList();
+
+                return Search(data);
             }
         }
         public List<MoviesInDB> GetByGenre(string genre)
         {
             return _databaseCollections.MovieDetails().Find(Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"))).ToList();
+        }
+        public List<MoviesInDB> GetByYear(string Year)
+        {
+            return _databaseCollections.MovieDetails().Find(Builders<MoviesInDB>.Filter.Regex("Year", new BsonRegularExpression(Year, "i"))).ToList();
         }
         public List<MoviesInDB> GetByRequestandGenre(string request, string genre)
         {
@@ -58,6 +63,20 @@ namespace MovieApp.Services
             var YearFilter = Builders<MoviesInDB>.Filter.Regex("Year", new BsonRegularExpression(Year, "i"));
             var MovieFilter = SearchFilter & GenreFilter & YearFilter;
             var result = _databaseCollections.MovieDetails().Find(MovieFilter).ToList();
+            return result;
+        }
+        public List<MoviesInDB> Search(string request)
+        {
+            List<MoviesInDB> result = new();
+            var filters = new List<FilterDefinition<MoviesInDB>>();
+            filters.Add(Builders<MoviesInDB>.Filter.Regex("Title", new BsonRegularExpression(request, "i")));
+            filters.Add(Builders<MoviesInDB>.Filter.Regex("Actor", new BsonRegularExpression(request, "i")));
+            filters.Add(Builders<MoviesInDB>.Filter.Regex("Director", new BsonRegularExpression(request, "i")));
+            if (filters.Count > 0)
+            {
+                var combinedFilter = Builders<MoviesInDB>.Filter.Or(filters);
+                result = _databaseCollections.MovieDetails().Find(combinedFilter).ToList();
+            }
             return result;
         }
     }
