@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace MovieApp.Services
 {
@@ -24,12 +25,12 @@ namespace MovieApp.Services
 
         public ViewPage AboutMovie(string movieName)
         {
-            var result = _databaseCollections.MovieDetails().Find(x => x.Title == movieName).SingleOrDefault();
-            var imdbid = result.imdbID;
+            var result = _databaseCollections.MovieDetails().Find(x => x.imdbID == movieName).SingleOrDefault();
+            //var imdbid = result.imdbID;
             ViewPage viewPage = new ViewPage
             {
                 Moviedata = result,
-                MovieReviews = _databaseCollections.AllComments().Find(x => x.imdbID == imdbid).ToList()
+                MovieReviews = _databaseCollections.AllComments().Find(x => x.imdbID == movieName).ToList()
             };
             return viewPage;
         }
@@ -38,7 +39,7 @@ namespace MovieApp.Services
             var client = new RestClient("http://www.omdbapi.com");
             var request = new RestRequest();
             request.AddParameter("apiKey", _configuration["apiKey"]);
-            request.AddParameter("t", movieName);
+            request.AddParameter("i", movieName);
             var response = client.Execute(request);
             MovieModel? MovieFromApi = JsonConvert.DeserializeObject<MovieModel>(response.Content);
             return MovieFromApi!.imdbRating;
@@ -48,7 +49,7 @@ namespace MovieApp.Services
             var client = new RestClient("http://www.omdbapi.com");
             var request = new RestRequest();
             request.AddParameter("apiKey", _configuration["apiKey"]);
-            request.AddParameter("t", movieName);
+            request.AddParameter("i", movieName);
             var response = client.Execute(request);
             MovieModel? MovieFromApi = JsonConvert.DeserializeObject<MovieModel>(response.Content);
             return MovieFromApi!.Ratings.ToList();
@@ -86,6 +87,11 @@ namespace MovieApp.Services
         {
             _databaseCollections.AllComments().DeleteOne(x => x.Id == ReviewID);
             return true;
+        }
+        public bool IsIMDbId(string text)
+        {
+            string pattern = @"^tt\d{5}$";
+            return Regex.IsMatch(text, pattern);
         }
     }
 }

@@ -15,29 +15,31 @@ namespace MovieApp.Controllers
         }
         public IActionResult Review(string movieName)
         {
+
             var result = _reviewService.AboutMovie(movieName);
             ViewBag.ImdbRating = _reviewService.MovieimdbRating(movieName);
             ViewBag.Ratings = _reviewService.MovieRating(movieName);
             ViewBag.Role = _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
             return View(result);
+
         }
 
         public IActionResult MyComment(string remarks, string IMDBID, int Stars)
         {
             if (_reviewService.StoreComment(remarks, IMDBID, Stars))
             {
-                ViewBag.ErrorMessage = "Review Submitted";
+                ViewBag.Message = "Review Submitted";
                 return RedirectToAction("HomePage", "HomePage");
             }
             else
             {
-                ViewBag.ErrorMessage = "Something Went Wrong! Try again Later.";
+                ViewBag.Message = "Something Went Wrong! Try again Later.";
                 return RedirectToAction("HomePage", "HomePage");
             }
         }
         public IActionResult DeleteComment(string ReviewID)
         {
-            if(_reviewService.DeleteCommentMethod(ReviewID))
+            if (_reviewService.DeleteCommentMethod(ReviewID))
             {
                 return Content("Done");
             }

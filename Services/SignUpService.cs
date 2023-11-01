@@ -24,10 +24,8 @@ namespace MainProject.SignUp.Services
             else
             {
                 _databaseCollections.UserDetails().InsertOne(request);
-
                 var filter = Builders<SignUpModel>.Filter.Empty; 
-                var update = Builders<SignUpModel>.Update.Unset("ConfirmPassword");
-                
+                var update = Builders<SignUpModel>.Update.Unset("ConfirmPassword");               
                 _databaseCollections.UserDetails().UpdateMany(filter, update);
                 return true;
             }

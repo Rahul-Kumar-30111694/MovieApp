@@ -18,7 +18,7 @@ namespace MovieApp.Services
 
         public bool AdminMethods(MoviesInDB movierequest)
         {
-            var movie = _databaseCollections.MovieDetails().Find(x => x.Title == movierequest.Title).SingleOrDefault();
+            var movie = _databaseCollections.MovieDetails().Find(x => x.imdbID == movierequest.imdbID).SingleOrDefault();
             if (movie != null)
             {
                 return false;
@@ -28,7 +28,7 @@ namespace MovieApp.Services
                 var client = new RestClient("http://www.omdbapi.com");
                 var request = new RestRequest();
                 request.AddParameter("apiKey", _configuration["apiKey"]);
-                request.AddParameter("t", movierequest.Title);
+                request.AddParameter("i", movierequest.imdbID);
                 var response = client.Execute(request);
                 MovieModel? MovieFromApi = JsonConvert.DeserializeObject<MovieModel>(response.Content);
                 movierequest.Poster = MovieFromApi!.Poster;

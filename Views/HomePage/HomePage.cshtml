@@ -1,35 +1,5 @@
 @model List<MoviesInDB>
 
-@* @inject IConfiguration _configuration
-
-@functions {
-    public string? ValidateToken(string token)
-    {
-        if (string.IsNullOrWhiteSpace(token))
-        {
-            return null;
-        }
-        var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-        var key = new
-        Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
-        var validationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                IssuerSigningKey = key
-            };
-        Microsoft.IdentityModel.Tokens.SecurityToken validatedToken;
-        var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
-        string role = principal.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value!;
-        return role;
-    }
-}
-@{
-    var tokenCookies = Context.Request.Cookies["Token"];
-    @* var userRole = ValidateToken(tokenCookies); 
-} *@
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -100,7 +70,7 @@
         @foreach (var item in Model)
         {
             <div class="movie-card">
-                <a href="@Url.Action("Review", "Review", new { movieName = item.Title })"><img class="movie-poster"
+                <a href="@Url.Action("Review", "Review", new { movieName = item.imdbID })"><img class="movie-poster"
                         src="@item.Poster" alt="Movie Poster" /></a>
                 <div class="movie-details">
                     <h3 class="movie-title">@item.Title</h3>
