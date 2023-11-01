@@ -1,42 +1,46 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieApp.Methods;
 using MovieApp.Models;
 using MovieApp.Services;
 
 namespace MainProject.Login.Controllers
 {
-
     public class LoginController : Controller
     {
         private readonly ILoginService _loginService;
-        private readonly IJWTMethod _jWTMethod;
 
-        public LoginController(ILoginService loginService, IJWTMethod jWTMethod)
+        public LoginController(ILoginService loginService)
         {
             _loginService = loginService;
-            _jWTMethod = jWTMethod;
         }
         public IActionResult Index()
         {
+            ViewBag.Message = TempData["Message"] as string;
             return View();
         }
         public IActionResult Logout()
         {
             Response.Cookies.Delete("Token");
-            return RedirectToAction("Login");
+            return RedirectToAction("Index");
         }
         public IActionResult Login(LoginModel request)
         {
-            //if (ModelState.IsValid)
-            //{
-            bool result = _loginService.LoginMethod(request);
-            if (result)
+            if (ModelState.IsValid)
             {
-                //TempData["Message"] = _jWTMethod.ValidateToken(_jWTMethod.CreateToken(request.EmailAddress));
-                return RedirectToAction("HomePage", "Homepage", new { data = request.EmailAddress });
+                if (_loginService.LoginMethod(request))
+                {
+                    return RedirectToAction("HomePage", "Homepage", new { data = request.EmailAddress });
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Wrong Credentials. Please try again.";
+                    return View("Index");
+                }
             }
-            //     }
-            return View("Index");
+            else
+            {
+                ViewBag.ErrorMessage = "Invalid User. Please try again.";
+                return View("Index");
+            }
         }
     }
 }

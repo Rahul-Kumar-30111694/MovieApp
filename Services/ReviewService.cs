@@ -53,10 +53,11 @@ namespace MovieApp.Services
             MovieModel? MovieFromApi = JsonConvert.DeserializeObject<MovieModel>(response.Content);
             return MovieFromApi!.Ratings.ToList();
         }
-        public bool StoreComment(string data, string IMDBID)
+        public bool StoreComment(string data, string IMDBID, int Stars)
         {
             Review review = new Review
             {
+                Stars = Stars,
                 Username = getusername(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!),
                 imdbID = IMDBID,
                 Comments = data
@@ -80,6 +81,11 @@ namespace MovieApp.Services
             string email = principal.FindFirst(ClaimTypes.Email)?.Value!;
             var user = _databaseCollections.UserDetails().Find(x => x.EmailAddress == email).SingleOrDefault();
             return user.Username!;
+        }
+        public bool DeleteCommentMethod(string ReviewID)
+        {
+            _databaseCollections.AllComments().DeleteOne(x => x.Id == ReviewID);
+            return true;
         }
     }
 }

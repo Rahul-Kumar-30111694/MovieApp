@@ -1,153 +1,71 @@
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
-using MovieApp.Models;
+using MovieApp.Methods;
 using MovieApp.Services;
-using MovieApp.Database;
 
 namespace MovieApp.Controllers
 {
     public class HomePageController : Controller
     {
         private readonly IHomePageService _homePageService;
-        public HomePageController(IHomePageService homePageService)
+        private readonly IJWTMethod _jWTMethod;
+        public HomePageController(IHomePageService homePageService, IJWTMethod jWTMethod)
         {
             _homePageService = homePageService;
+            _jWTMethod = jWTMethod;
         }
-
-        // public ActionResult HomePage(string request, int page = 1, int pageSize = 10)
-        // {
-        //     List<MoviesInDB> movies;
-
-        //     if (!string.IsNullOrEmpty(request))
-        //     {
-        //         ViewBag.SearchTerm = request;
-        //         movies = GetMoviesBySearchTerm(request);
-        //     }
-        //     else
-        //     {
-        //         ViewBag.SearchTerm = "";
-        //         movies = _databaseCollections.MovieDetails().Find(_ => true).ToList(); 
-        //     }
-
-        //     var pagedMovies = Paginate(movies, page, pageSize);
-
-        //     return View(new PagedMoviesViewModel
-        //     {
-        //         Movies = pagedMovies,
-        //         CurrentPage = page,
-        //         TotalPages = (int)Math.Ceiling((double)movies.Count / pageSize)
-        //     });
-        // }
-        // private List<MoviesInDB> Paginate(List<MoviesInDB> movies, int page, int pageSize)
-        // {
-        //     int skip = (page - 1) * pageSize;
-        //     return movies.Skip(skip).Take(pageSize).ToList();
-        // }
-        // private List<MoviesInDB> GetMoviesBySearchTerm(string searchTerm)
-        // {
-        //     return _databaseCollections.MovieDetails().Find(x => x.Title == searchTerm).ToList();
-        // }
-        // // public IActionResult GFilter(string genre)
-        // // {
-        // //     _homePageService.GenreFilter(genre);
-        // //     return Content(genre);
-        // // }
-        // public ActionResult GFilter(string genre, int page = 1, int pageSize = 10)
-        // {
-        //     List<MoviesInDB> movies;
-
-        //     if (!string.IsNullOrEmpty(genre))
-        //     {
-        //         ViewBag.SearchTerm = genre;
-        //         movies = GetMoviesBySearchTerm(genre);
-        //     }
-        //     else
-        //     {
-        //         ViewBag.SearchTerm = "";
-        //         movies = _databaseCollections.MovieDetails().Find(_ => true).ToList(); 
-        //     }
-
-        //     var pagedMovies = Paginate(movies, page, pageSize);
-
-        //     return View(new PagedMoviesViewModel
-        //     {
-        //         Movies = pagedMovies,
-        //         CurrentPage = page,
-        //         TotalPages = (int)Math.Ceiling((double)movies.Count / pageSize)
-        //     });
-        // }
-    
-        public IActionResult HomePage(string request,string genre, string Year)
+        public IActionResult HomePage(string request, string genre, string Year)
         {
-            //ViewBag.Role = TempData["Message"] as string;
-            // if(Year == null)
-            // {
-            //     if(genre == null)
-            //     {
-
-            //     return View(_homePageService.GetByItem(request));
-            //     }
-            //     else
-            //     {
-            //         return View(_homePageService.GetByGenre(genre));
-            //     }
-            // }
-            // else if(request == null && Year == null)
-            // {
-            //     return View(_homePageService.GetByGenre(genre));
-            // }
-            // else if(Year == null)
-            // {
-            //     return View(_homePageService.GetByRequestandGenre(request, genre));
-            // } 
-            if(string.IsNullOrEmpty(Year))
+            ViewBag.Role = rolereturn();
+            if (!string.IsNullOrEmpty(Request.Cookies["Token"]))
             {
-                if(string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                if (string.IsNullOrEmpty(Year))
                 {
-                    return View(_homePageService.GetByItem(request));
-                }
-                else if(string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
-                {
-                    return View(_homePageService.GetByItem(request));
-                }
-                else if(!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
-                {
-                    return View(_homePageService.GetByGenre(genre));
+                    if (string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByItem(request));
+                    }
+                    else if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByItem(request));
+                    }
+                    else if (!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByGenre(genre));
+                    }
+                    else
+                    {
+                        return View(_homePageService.GetByRequestandGenre(request, genre));
+                    }
                 }
                 else
                 {
-                    return View(_homePageService.GetByRequestandGenre(request, genre));
+                    if (string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByYear(Year));
+                    }
+                    else if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByRequestandYear(request, Year));
+                    }
+                    else if (!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    {
+                        return View(_homePageService.GetByGenreandYear(genre, Year));
+                    }
+                    else
+                    {
+                        return View(_homePageService.GetAll(request, genre, Year));
+                    }
                 }
             }
-            else if(!string.IsNullOrEmpty(Year))
+            else
             {
-                if(string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
-                {
-
-                }
-                else if(string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
-                {
-
-                }
-                else if(!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
-                {
-
-                }
-                else
-                {
-
-                }
+                return Content("UNAUTHORIZED");
             }
-            return Ok();
         }
-        public IActionResult Logout()
+        public string rolereturn()
         {
-            Response.Cookies.Delete("Token");
-            return RedirectToAction("Login", "Login");
+            return _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
         }
-        // public IActionResult GFilter(string genre)
-        // {
-        //     return RedirectToAction("HomePage", "HomePage", _homePageService.GetByGenre(genre));
-        // }
+
     }
 }

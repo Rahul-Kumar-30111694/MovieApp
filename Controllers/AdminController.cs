@@ -18,7 +18,7 @@ namespace MovieApp.Controllers
         {
             if (_jWTMethod.ValidateToken(Request.Cookies["Token"]) == "Admin")
             {
-            return View();
+                return View();
             }
             else
             {

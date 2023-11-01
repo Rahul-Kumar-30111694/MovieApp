@@ -8,13 +8,6 @@
                         <p class="text-muted"> Please enter your Details!</p>
                         <input type="text" name="Username" placeholder="Username">
                         <input type="text" name="EmailAddress" placeholder="Email Address">
-                        @* <div class="roleselect">
-                            <label for="role">Role:</label>
-                            <select id="role" name="role">
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
-                            </select>
-                        </div> *@
                         <input type="password" id="password" name="Password" placeholder="Password">
                         <input type="password" onkeyup="check()" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm Password"> <br>
                         @* <p id="message"></p> *@
@@ -23,6 +16,12 @@
                         <a class="signupbutton" asp-controller="Login" asp-action="Index" style="color :#3498db;">Login</a><br><br>
                         <a class="forgotpassword" asp-controller="ForgotPassword" asp-action="Index">Forgot password ?</a>
                     </form>
+                    @if (ViewBag.Message != null)
+                    {
+                        <script>
+                            alert("@ViewBag.Message");
+                        </script>
+                    }
                 </div>
             </div>
         </div>

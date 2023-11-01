@@ -1,6 +1,6 @@
 @model List<MoviesInDB>
 
-@inject IConfiguration _configuration
+@* @inject IConfiguration _configuration
 
 @functions {
     public string? ValidateToken(string token)
@@ -27,8 +27,8 @@
 }
 @{
     var tokenCookies = Context.Request.Cookies["Token"];
-    @* var userRole = ValidateToken(tokenCookies); *@
-}
+    @* var userRole = ValidateToken(tokenCookies); 
+} *@
 
 <head>
     <meta charset="utf-8" />
@@ -49,15 +49,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @* @if (@ViewBag.Role == "Admin")
-                        { *@
-                        @if (ValidateToken(tokenCookies) == "Admin")
+                        @if (@ViewBag.Role == "Admin")
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin">AddMovies</a>
                             </li>
                         }
-                        @* } *@
                         <li>
                             <form asp-controller="Login" asp-action="Logout" method="post">
                                 <button class="Logoutbtn" style="margin-left: 900px;" type="submit">Logout</button>
@@ -113,6 +110,7 @@
         }
     </div>
 </div>
+
 
 <script>
     document.getElementById('genre').addEventListener('change', function () { document.getElementById('genreForm').submit(); });
