@@ -30,13 +30,13 @@ namespace MainProject.SignUp.Controllers
                 }
                 else
                 {
-                    TempData["Message"] = "Wrong inputs. Please Enter All Details in Valid Formats.";
+                    ViewBag.Message = "Wrong inputs. Please Enter All Details in Valid Formats.";
                     return View("Index");
                 }
             }
             else
             {
-                TempData["Message"] = "Registration Failed.";
+                ViewBag.Message = "Registration Failed.";
                 return View("Index");
             }
         }
