@@ -18,11 +18,13 @@ namespace MovieApp.Controllers
         {
             if (_jWTMethod.ValidateToken(Request.Cookies["Token"]) == "Admin")
             {
+                ViewBag.Message = TempData["Message"]?.ToString();
                 return View();
             }
             else
             {
-                return Content("UNAUTHORIZED");
+                TempData["Message"] = "Unauthorized Access Denied.";
+                return RedirectToAction("Index", "Login");
             }
         }
 
@@ -30,12 +32,12 @@ namespace MovieApp.Controllers
         {
             if(_adminService.AdminMethods(request))
             {   
-                ViewBag.Message = "Successfull";
+                TempData["Message"] = "Successfull.";
                 return RedirectToAction("Admin");
             }
             else
             {
-                ViewBag.Message = "Something went Wrong.";
+                TempData["Message"] = "Failed.";
                 return RedirectToAction("Admin");
             }
         }

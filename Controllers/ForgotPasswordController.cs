@@ -8,6 +8,7 @@ namespace MainProject.ForgotPassword.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Message = TempData["Message"]?.ToString();
             return View();
         } 
 
@@ -24,7 +25,7 @@ namespace MainProject.ForgotPassword.Controllers
             if(ModelState.IsValid)
             {
                 _forgotPasswordService.ForgotPasswordMethod(request);
-                ViewBag.ErrorMessage = "Successful";
+                TempData["Message"] = "Successfull.";
                 return RedirectToAction("Index", "Login");
             }
             else

@@ -22,7 +22,8 @@
                         @if (@ViewBag.Role == "Admin")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin">AddMovies</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin"
+                                    asp-action="Admin">AddMovies</a>
                             </li>
                         }
                         <li>
@@ -44,26 +45,51 @@
         </form>
         <br>
     </div>
-    <div class="moviefilters">
-        <form method="post" id="genreForm" asp-controller="HomePage" asp-action="HomePage">
-            <label for="genre">Genre:</label>
-            <select id="genre" name="genre" style="margin-right: 25px;">
-                <option value="no"> </option>
-                <option value="action">Action</option>
-                <option value="comedy">Comedy</option>
-                <option value="drama">Drama</option>
-                <!-- Add more genre options as needed -->
-            </select>
-        </form>
-        <form method="post" asp-controller="Homepage" asp-action="HomePage" id="yearForm">
-            <label for="year">Year:</label>
-            <select id="year" name="Year">
-                <option value="no"> </option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <!-- Add more year options as needed -->
-            </select>
+    <button id="filterBtn">filter</button>
+    <div id="filterDiv">
+        <form method="get" id="filterForm" asp-controller="HomePage" asp-action="HomePage">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="Year">Start Date:</label>
+                    <input type="text" name="Year" class="form-control">
+                </div>
+            </div>
+            <h1>Genre</h1>
+            <br>
+            <div class="d-flex flex-wrap">
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Action" />Action
+                    </label>
+                </div>
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Horror" />Horror
+                    </label>
+                </div>
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Thriller" />Thriller
+                    </label>
+                </div>
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Comedy" />Comedy
+                    </label>
+                </div>
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Romance" />Romance
+                    </label>
+                </div>
+                <div class="genreDiv">
+                    <label style="margin-right: 20px;">
+                        <input type="checkbox" name="genre" value="Drama" />Drama
+                    </label>
+                </div>
+            </div>
+            <br>
+            <button type="submit" id="filterSearch" class="button solid" style="color: black;">Search</button>
         </form>
     </div>
     <div class="movie-grid">
@@ -74,7 +100,6 @@
                         src="@item.Poster" alt="Movie Poster" /></a>
                 <div class="movie-details">
                     <h3 class="movie-title">@item.Title</h3>
-                    <!-- Add other movie details here -->
                 </div>
             </div>
         }
@@ -83,6 +108,14 @@
 
 
 <script>
-    document.getElementById('genre').addEventListener('change', function () { document.getElementById('genreForm').submit(); });
-    document.getElementById('year').addEventListener('change', function () { document.getElementById('yearForm').submit(); });
+    var filterDiv = document.getElementById("filterDiv");
+    var filterBtn = document.getElementById("filterBtn");
+    filterDiv.style.display = "none";
+    filterBtn.addEventListener("click", function () {
+        if (filterDiv.style.display === "none") {
+            filterDiv.style.display = "block";
+        } else {
+            filterDiv.style.display = "none";
+        }
+    });
 </script>

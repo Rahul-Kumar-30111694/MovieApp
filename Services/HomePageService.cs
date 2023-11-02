@@ -24,18 +24,46 @@ namespace MovieApp.Services
                 return Search(data);
             }
         }
-        public List<MoviesInDB> GetByGenre(string genre)
+        // public List<MoviesInDB> GetByGenre(string genre)
+        // {
+        //     return _databaseCollections.MovieDetails().Find(Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"))).ToList();
+        // }
+        public List<MoviesInDB> GetMoviesByGenres(List<string> genres)
         {
-            return _databaseCollections.MovieDetails().Find(Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"))).ToList();
+            FilterDefinition<MoviesInDB> MovieFilter = Builders<MoviesInDB>.Filter.Empty;;
+            //var result = genres.ToString();
+            foreach(var item in genres)
+            {
+                var GenreFilter = Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(item, "i"));
+                MovieFilter = MovieFilter & GenreFilter;
+            }
+            if(MovieFilter == Builders<MoviesInDB>.Filter.Empty)
+            {
+                return new List<MoviesInDB>();
+            }
+            else
+            {
+                return _databaseCollections.MovieDetails().Find(MovieFilter).ToList();
+            }
+        }
+        public FilterDefinition<MoviesInDB> ReturnGenres(List<string> genres)
+        {
+            FilterDefinition<MoviesInDB> MovieFilter = Builders<MoviesInDB>.Filter.Empty;;
+            foreach(var item in genres)
+            {
+                var GenreFilter = Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(item, "i"));
+                MovieFilter = MovieFilter & GenreFilter;
+            }
+            return MovieFilter;
         }
         public List<MoviesInDB> GetByYear(string Year)
         {
             return _databaseCollections.MovieDetails().Find(Builders<MoviesInDB>.Filter.Regex("Year", new BsonRegularExpression(Year, "i"))).ToList();
         }
-        public List<MoviesInDB> GetByRequestandGenre(string request, string genre)
+        public List<MoviesInDB> GetByRequestandGenre(string request, List<string> genres)
         {
             var SearchFilter = Builders<MoviesInDB>.Filter.Regex("Title", new BsonRegularExpression(request, "i"));
-            var GenreFilter = Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"));
+            var GenreFilter = ReturnGenres(genres);
             var MovieFilter = SearchFilter & GenreFilter;
             var result = _databaseCollections.MovieDetails().Find(MovieFilter).ToList();
             return result;
@@ -48,18 +76,18 @@ namespace MovieApp.Services
             var result = _databaseCollections.MovieDetails().Find(MovieFilter).ToList();
             return result;
         }
-        public List<MoviesInDB> GetByGenreandYear(string genre, string Year)
+        public List<MoviesInDB> GetByGenreandYear(List<string> genres, string Year)
         {
-            var GenreFilter = Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"));
+            var GenreFilter = ReturnGenres(genres);
             var YearFilter = Builders<MoviesInDB>.Filter.Regex("Year", new BsonRegularExpression(Year, "i"));
             var MovieFilter = GenreFilter & YearFilter;
             var result = _databaseCollections.MovieDetails().Find(MovieFilter).ToList();
             return result;
         }
-        public List<MoviesInDB> GetAll(string request, string genre, string Year)
+        public List<MoviesInDB> GetAll(string request, List<string> genres, string Year)
         {
             var SearchFilter = Builders<MoviesInDB>.Filter.Regex("Title", new BsonRegularExpression(request, "i"));
-            var GenreFilter = Builders<MoviesInDB>.Filter.Regex("Genre", new BsonRegularExpression(genre, "i"));
+            var GenreFilter = ReturnGenres(genres);
             var YearFilter = Builders<MoviesInDB>.Filter.Regex("Year", new BsonRegularExpression(Year, "i"));
             var MovieFilter = SearchFilter & GenreFilter & YearFilter;
             var result = _databaseCollections.MovieDetails().Find(MovieFilter).ToList();

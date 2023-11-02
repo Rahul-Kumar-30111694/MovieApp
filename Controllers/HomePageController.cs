@@ -13,24 +13,25 @@ namespace MovieApp.Controllers
             _homePageService = homePageService;
             _jWTMethod = jWTMethod;
         }
-        public IActionResult HomePage(string request, string genre, string Year)
+        public IActionResult HomePage(string request, List<string> genre, string Year)
         {
+            ViewBag.Message = TempData["Message"]?.ToString();
             ViewBag.Role = rolereturn();
             if (!string.IsNullOrEmpty(Request.Cookies["Token"]))
             {
                 if (string.IsNullOrEmpty(Year))
                 {
-                    if (string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    if ((genre == null || genre.Count == 0) && string.IsNullOrEmpty(request))
                     {
                         return View(_homePageService.GetByItem(request));
                     }
-                    else if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
+                    else if ((genre == null || genre.Count == 0) && !string.IsNullOrEmpty(request))
                     {
                         return View(_homePageService.GetByItem(request));
                     }
-                    else if (!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    else if ((genre != null || genre.Count != 0) && string.IsNullOrEmpty(request))
                     {
-                        return View(_homePageService.GetByGenre(genre));
+                        return View(_homePageService.GetMoviesByGenres(genre));
                     }
                     else
                     {
@@ -39,15 +40,15 @@ namespace MovieApp.Controllers
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    if ((genre == null || genre.Count == 0) && string.IsNullOrEmpty(request))
                     {
                         return View(_homePageService.GetByYear(Year));
                     }
-                    else if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(request))
+                    else if ((genre == null || genre.Count == 0) && !string.IsNullOrEmpty(request))
                     {
                         return View(_homePageService.GetByRequestandYear(request, Year));
                     }
-                    else if (!string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(request))
+                    else if ((genre != null || genre.Count != 0) && string.IsNullOrEmpty(request))
                     {
                         return View(_homePageService.GetByGenreandYear(genre, Year));
                     }

@@ -50,7 +50,7 @@
             <h1>@Model.Moviedata.Title</h1>
             <img class="movie-poster" src="@Model.Moviedata.Poster" alt="Movie Poster" />
             <p>Year: @Model.Moviedata.Year</p>
-            <p>Genre: @Model.Moviedata.Genre</p>
+            <p>Genre: @Model.Moviedata.Genre.ToString()</p>
             <p>Director: @Model.Moviedata.Director</p>
             <p>Rating: @ViewBag.ImdbRating</p>
             <p>

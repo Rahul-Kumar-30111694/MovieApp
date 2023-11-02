@@ -14,7 +14,7 @@ namespace MainProject.Login.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Message = TempData["Message"] as string;
+            ViewBag.Message = TempData["Message"]?.ToString();
             return View();
         }
         public IActionResult Logout()
