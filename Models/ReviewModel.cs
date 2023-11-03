@@ -9,7 +9,8 @@ namespace MovieApp.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string Username { get; set; }  
+        public string Username { get; set; } 
+        public string EmailAddress { get; set; }  
         public int Stars { get; set; }
         public DateTime DatePosted { get; set; } = DateTime.UtcNow;
         public string imdbID { get; set; }

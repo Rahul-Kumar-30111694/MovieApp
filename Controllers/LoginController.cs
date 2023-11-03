@@ -28,6 +28,7 @@ namespace MainProject.Login.Controllers
             {
                 if (_loginService.LoginMethod(request))
                 {
+                    Response.Cookies.Append("Email", request.EmailAddress);
                     return RedirectToAction("HomePage", "Homepage", new { data = request.EmailAddress });
                 }
                 else

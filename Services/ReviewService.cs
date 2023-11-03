@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using MovieApp.Methods;
 
 namespace MovieApp.Services
 {
@@ -16,11 +17,13 @@ namespace MovieApp.Services
         private readonly IDatabaseCollections _databaseCollections;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ReviewService(IDatabaseCollections databaseCollections, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        private readonly IJWTMethod _jWTMethod;
+        public ReviewService(IDatabaseCollections databaseCollections, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IJWTMethod jWTMethod)
         {
             _databaseCollections = databaseCollections;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _jWTMethod = jWTMethod;
         }
 
         public ViewPage AboutMovie(string movieName)
@@ -59,29 +62,12 @@ namespace MovieApp.Services
             Review review = new Review
             {
                 Stars = Stars,
-                Username = getusername(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!),
+                Username = _jWTMethod.ValidateToken(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!),
                 imdbID = IMDBID,
                 Comments = data
             };
             _databaseCollections.AllComments().InsertOne(review);
             return true;
-        }
-        public string getusername(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                IssuerSigningKey = key
-            };
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
-            string email = principal.FindFirst(ClaimTypes.Email)?.Value!;
-            var user = _databaseCollections.UserDetails().Find(x => x.EmailAddress == email).SingleOrDefault();
-            return user.Username!;
         }
         public bool DeleteCommentMethod(string ReviewID)
         {
