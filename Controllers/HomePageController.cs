@@ -16,7 +16,8 @@ namespace MovieApp.Controllers
         public IActionResult HomePage(string request, List<string> genre, string Year)
         {
             ViewBag.Message = TempData["Message"]?.ToString();
-            ViewBag.Role = rolereturn();
+            var role = _jWTMethod.ValidateToken(Request.Cookies["Token"]);
+            ViewBag.Role = role.Role;
             if (!string.IsNullOrEmpty(Request.Cookies["Token"]))
             {
                 if (string.IsNullOrEmpty(Year))
@@ -62,11 +63,6 @@ namespace MovieApp.Controllers
             {
                 return Content("UNAUTHORIZED");
             }
-        }
-        public string rolereturn()
-        {
-            var result = _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
-            return result;
         }
     }
 }

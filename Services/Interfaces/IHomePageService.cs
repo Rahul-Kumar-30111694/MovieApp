@@ -1,3 +1,4 @@
+using MongoDB.Driver;
 using MovieApp.Models;
 
 namespace MovieApp.Services
@@ -13,5 +14,6 @@ namespace MovieApp.Services
         public List<MoviesInDB> GetAll(string request, List<string> genre, string Year);
         public List<MoviesInDB> Search(string request);
         public List<MoviesInDB> GetMoviesByGenres(List<string> genres);
+        public FilterDefinition<MoviesInDB> ReturnGenres(List<string> genres);
     }
 }

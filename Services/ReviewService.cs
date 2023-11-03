@@ -62,12 +62,30 @@ namespace MovieApp.Services
             Review review = new Review
             {
                 Stars = Stars,
-                Username = _jWTMethod.ValidateToken(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!),
+                Username = getusername(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!),
+                EmailAddress = _jWTMethod.ValidateToken(_httpContextAccessor?.HttpContext?.Request.Cookies["Token"]!).EmailAddress,
                 imdbID = IMDBID,
                 Comments = data
             };
             _databaseCollections.AllComments().InsertOne(review);
             return true;
+        }
+        public string getusername(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                IssuerSigningKey = key
+            };
+            SecurityToken validatedToken;
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            string email = principal.FindFirst(ClaimTypes.Email)?.Value!;
+            var user = _databaseCollections.UserDetails().Find(x => x.EmailAddress == email).SingleOrDefault();
+            return user.Username!;
         }
         public bool DeleteCommentMethod(string ReviewID)
         {

@@ -5,7 +5,7 @@ namespace MovieApp.Methods
     public interface IJWTMethod
     {
         public string CreateToken(string UserEmail);
-        public string ValidateToken(string token);
-
+        public SignUpModel ValidateToken(string token);
+        //public string getEmail(string token);
     }
 }

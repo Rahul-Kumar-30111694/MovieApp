@@ -16,10 +16,11 @@ namespace MovieApp.Controllers
         public IActionResult Review(string movieName)
         {
             var result = _reviewService.AboutMovie(movieName);
-            
             ViewBag.ImdbRating = _reviewService.MovieimdbRating(movieName);
             ViewBag.Ratings = _reviewService.MovieRating(movieName);
-            ViewBag.Role = _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
+            var role = _jWTMethod.ValidateToken(Request.Cookies["Token"]);
+            ViewBag.Role = role.Role;
+            ViewBag.Email = _jWTMethod.ValidateToken(Request.Cookies["Token"]).EmailAddress;
             return View(result);
         }
 

@@ -6,6 +6,9 @@
     alert("@ViewBag.Message");
     </script>
 }
+@{
+    var temp = ViewBag.Email;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +101,7 @@
                                         <p>@comment.Username</p>
                                         <p style="margin-left: 500px;">@comment.DatePosted</p>
                                     </div>
-                                    @if(comment.Stars == -1)
+                                    @if (comment.Stars == -1)
                                     {
                                         <p>Stars: Unrated</p>
                                     }
@@ -107,21 +110,22 @@
                                         <p>Stars: @comment.Stars stars</p>
                                     }
                                     <div class="row">
-    <div class="col-md-9">
-        <p>@comment.Comments</p>
-    </div>
-    <div class="col-md-3 d-flex justify-content-end" style="margin-left: 500px; margin-top:-50px">
-        @if (ViewBag.Role == "Admin")
-        {
-            <form method="post" asp-controller="Review" asp-action="DeleteComment">
-                <input type="hidden" name="ReviewID" value="@comment.Id">
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </form>
-        }
-    </div>
-</div>
+                                        <div class="col-md-9">
+                                            <p>@comment.Comments</p>
+                                        </div>
+                                        <div class="col-md-3 d-flex justify-content-end"
+                                            style="margin-left: 500px; margin-top:-50px">
+                                            @if (ViewBag.Role == "Admin" || ViewBag.Email == comment.EmailAddress)
+                                            {
+                                                <form method="post" asp-controller="Review" asp-action="DeleteComment">
+                                                    <input type="hidden" name="ReviewID" value="@comment.Id">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>

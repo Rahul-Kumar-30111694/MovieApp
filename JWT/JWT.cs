@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using MovieApp.Database;
+using MovieApp.Models;
 
 namespace MovieApp.Methods
 {
@@ -39,7 +40,7 @@ namespace MovieApp.Methods
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
-        public string ValidateToken(string token)
+        public SignUpModel ValidateToken(string token)
         {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
@@ -54,7 +55,24 @@ namespace MovieApp.Methods
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
                 string email = principal.FindFirst(ClaimTypes.Email)?.Value!;
                 var user = _databaseCollections.UserDetails().Find(x => x.EmailAddress == email).SingleOrDefault();
-                return user.Role;
+                return user;
         }
+        // public string getEmail(string token)
+        // {
+        //     var tokenHandler = new JwtSecurityTokenHandler();
+        //     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
+        //     var validationParameters = new TokenValidationParameters
+        //     {
+        //         ValidateIssuer = false,
+        //         ValidateAudience = false,
+        //         ValidateLifetime = true,
+        //         IssuerSigningKey = key
+        //     };
+        //     SecurityToken validatedToken;
+        //     var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+        //     string email = principal.FindFirst(ClaimTypes.Email)?.Value!;
+        //     var user = _databaseCollections.UserDetails().Find(x => x.EmailAddress == email).SingleOrDefault();
+        //     return user.EmailAddress;
+        // }
     }
 }

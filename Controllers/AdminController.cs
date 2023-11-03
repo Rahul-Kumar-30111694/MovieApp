@@ -16,7 +16,7 @@ namespace MovieApp.Controllers
         }
         public IActionResult Admin()
         {
-            if (_jWTMethod.ValidateToken(Request.Cookies["Token"]) == "Admin")
+            if (_jWTMethod.ValidateToken(Request.Cookies["Token"]).Role == "Admin")
             {
                 ViewBag.Message = TempData["Message"]?.ToString();
                 return View();
