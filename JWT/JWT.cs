@@ -41,8 +41,6 @@ namespace MovieApp.Methods
         }
         public string ValidateToken(string token)
         {
-            
-            
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWTTokentext:Token").Value!));
                 var validationParameters = new TokenValidationParameters

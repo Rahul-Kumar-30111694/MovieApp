@@ -22,7 +22,7 @@ namespace MovieApp.Models
         [BsonElement("emailaddress")]
         [EmailAddress]
         [Remote("IsUnique", "Validation", ErrorMessage = "User Already Exists.")]
-        public string? EmailAddress { get; set; }
+        public string EmailAddress { get; set; }
 
         [Required]
         [BsonElement("password")]

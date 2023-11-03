@@ -65,8 +65,8 @@ namespace MovieApp.Controllers
         }
         public string rolereturn()
         {
-            return _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
+            var result = _jWTMethod.ValidateToken(Request.Cookies["Token"]!);
+            return result;
         }
-
     }
 }

@@ -98,17 +98,30 @@
                                         <p>@comment.Username</p>
                                         <p style="margin-left: 500px;">@comment.DatePosted</p>
                                     </div>
-                                    <p>Stars: @comment.Stars</p>
-                                    <p>@comment.Comments</p>
-                                    @if (@ViewBag.Role == "Admin")
+                                    @if(comment.Stars == -1)
                                     {
-                                        <form method="post" asp-controller="Review" asp-action="DeleteComment">
-                                            <input type="hidden" name="ReviewID" value="@comment.Id">
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <p>Stars: Unrated</p>
                                     }
+                                    else
+                                    {
+                                        <p>Stars: @comment.Stars stars</p>
+                                    }
+                                    <div class="row">
+    <div class="col-md-9">
+        <p>@comment.Comments</p>
+    </div>
+    <div class="col-md-3 d-flex justify-content-end" style="margin-left: 500px; margin-top:-50px">
+        @if (ViewBag.Role == "Admin")
+        {
+            <form method="post" asp-controller="Review" asp-action="DeleteComment">
+                <input type="hidden" name="ReviewID" value="@comment.Id">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </form>
+        }
+    </div>
+</div>
                                 </div>
                             </li>
                         </ul>
